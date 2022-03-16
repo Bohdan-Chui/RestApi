@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PairService {
+    public static final String URL = "https://cex.io/api/last_price/{symbol1}/{symbol2}";
     private final PairRepository repository;
     private final RestTemplate restTemplate;
 
@@ -29,8 +30,7 @@ public class PairService {
     }
 
     public RequestDTO getPostsAsObject(Crypto crypto, Fiat fiat) {
-        String url = "https://cex.io/api/last_price/{symbol1}/{symbol2}";
-        ResponseEntity<RequestDTO> response = restTemplate.getForEntity(url, RequestDTO.class, crypto.name(), fiat.name());
+        ResponseEntity<RequestDTO> response = restTemplate.getForEntity(URL, RequestDTO.class, crypto.name(), fiat.name());
         if(response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {
@@ -43,7 +43,7 @@ public class PairService {
     }
 
     public Pair getMinPrice(Crypto crypto){
-        List<Pair> list =  repository.getPairsByCrypto(crypto);
+        List<Pair> list = repository.getPairsByCrypto(crypto);
         return list.stream().min(Comparator.comparing(Pair::getPrice)).orElseThrow(NoSuchElementException::new);
     }
 
@@ -68,7 +68,7 @@ public class PairService {
         csvBody.add(Arrays.asList(xrp.getName(), xrp.getMinPrice().toString(), xrp.getMaxPrice().toString()));
 
         return CSVCreator.builder().
-                csvFileName("cryptoccurency").
+                csvFileName("cryptocurrency").
                 csvHeader(new String[]{"Name", "MinPrice","MaxPrice"}).
                 csvBody(csvBody)
                 .build();
