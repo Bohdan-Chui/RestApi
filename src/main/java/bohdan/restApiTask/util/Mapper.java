@@ -10,7 +10,10 @@ import bohdan.restApiTask.model.Pair;
  * simple mapper for data
  */
 public class Mapper {
-    public static Pair dtoPair(RequestDTO requestDTO){
+    public static Pair dtoPair(RequestDTO requestDTO) throws  CustomException{
+        if(requestDTO.getCurr1()!=null||requestDTO.getCurr2()!=null||requestDTO.getLprice()!=null){
+            throw new CustomException("Some fields is null");
+        }
         if(requestDTO.getCurr1().isEmpty()||requestDTO.getCurr2().isEmpty()||requestDTO.getLprice().isEmpty()){
             throw new CustomException("Some fields is empty");
         }

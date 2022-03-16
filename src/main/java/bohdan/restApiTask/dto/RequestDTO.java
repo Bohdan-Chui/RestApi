@@ -1,5 +1,6 @@
 package bohdan.restApiTask.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
+@Builder
 public class RequestDTO {
     String lprice;
     String curr1;
